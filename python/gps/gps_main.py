@@ -69,9 +69,13 @@ class GPSMain(object):
                 self.agent.get_samples(cond, -self._hyperparams['num_samples'])
                 for cond in self._train_idx
             ]
+
             self._take_iteration(itr, traj_sample_lists)
             pol_sample_lists = self._take_policy_samples()
             self._log_data(itr, traj_sample_lists, pol_sample_lists)
+
+            # Clear agent samples to prevent memory leak.
+            self.agent.clear_samples()
 
         self._end()
 
